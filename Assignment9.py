@@ -36,6 +36,7 @@ print("RSA Key Pairs Generated Successfully")
 # STEP 2: HELPER FUNCTIONS
 # ==========================================
 
+#Converts binary data into text so that it can be stored in JSON.
 def encode(data):
     return base64.b64encode(data).decode("utf-8")
 
@@ -66,7 +67,7 @@ def encrypt_image(image_path):
     # Generate random AES-256 key
     aes_key = AESGCM.generate_key(bit_length=256)
 
-    # Generate unique 96-bit nonce
+    # Generate unique 96-bit nonce .. generates 12 random bytes ussed for AES-GCM
     nonce = os.urandom(12)
 
     # Encrypt image using AES-GCM
@@ -79,6 +80,7 @@ def encrypt_image(image_path):
     )
 
     # Encrypt AES key using Bob's RSA public key
+    #OAEP stands for Optimal Asymmetric Encryption Padding.
     wrapped_key = bob_public.encrypt(
         aes_key,
         padding.OAEP(
@@ -109,6 +111,7 @@ def encrypt_image(image_path):
         "ciphertext": encode(ciphertext),
         "signature": encode(signature)
     }
+#    print(package)
 
     # Save encrypted package
     with open("encrypted_image.json", "w") as file:
