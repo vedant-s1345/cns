@@ -37,7 +37,7 @@ encrypted_key=rsa_cipher.encrypt(aes_key)
 
 print("Secret Key Encrypted...\n")
 
-rsa_cipher=PKCS1_OAEP(
+rsa_cipher=PKCS1_OAEP.new(
     private_key,
     hashAlgo=SHA256
 )
